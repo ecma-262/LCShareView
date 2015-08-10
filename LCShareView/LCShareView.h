@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^LCButtonPressBlock)(UIButton *button);
+typedef void(^LCDismissBlock)();
+
 @interface LCShareView : UIView
 
-//@property (nonatomic, strong, readonly) RACSignal *selectSignal;
-//@property (nonatomic, strong, readonly) RACSignal *dismissSignal;
-
-+ (void)showShareViewInVC:(UIViewController *)viewController buttonImages:(NSArray *)images;
-+ (void)showShareViewInVC:(UIViewController *)viewController buttonImages:(NSArray *)images buttonMargin:(CGFloat)margin;
++ (void)showShareViewInVC:(UIViewController *)viewController buttonImages:(NSArray *)images buttonPress:(LCButtonPressBlock)pressBlock dissmisBlock:(LCDismissBlock)dissmisBlock;
++ (void)showShareViewInVC:(UIViewController *)viewController buttonImages:(NSArray *)images buttonMargin:(CGFloat)margin buttonPress:(LCButtonPressBlock)pressBlock dissmisBlock:(LCDismissBlock)dissmisBlock;
 
 
 @end

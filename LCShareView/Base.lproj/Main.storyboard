@@ -40,11 +40,18 @@
                                     <segment title="Second"/>
                                 </segments>
                             </segmentedControl>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LhN-KA-4mP">
+                                <rect key="frame" x="0.0" y="283" width="320" height="2"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="7AZ-k0-hxi" secondAttribute="centerY" id="AqR-df-yqo"/>
+                            <constraint firstItem="LhN-KA-4mP" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="Et1-TI-fvq"/>
+                            <constraint firstAttribute="centerY" secondItem="LhN-KA-4mP" secondAttribute="centerY" id="Lfl-BD-vTK"/>
                             <constraint firstAttribute="centerX" secondItem="7AZ-k0-hxi" secondAttribute="centerX" id="LxJ-FJ-e3I"/>
+                            <constraint firstAttribute="centerX" secondItem="LhN-KA-4mP" secondAttribute="centerX" id="M5x-RC-qR4"/>
+                            <constraint firstAttribute="trailing" secondItem="LhN-KA-4mP" secondAttribute="trailing" id="oGw-I4-c4P"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ZKU-W2-TUV">

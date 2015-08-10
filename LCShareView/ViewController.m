@@ -27,14 +27,20 @@
 
 
 - (IBAction)showButtonPress:(id)sender{
-    [LCShareView showShareViewInVC:self buttonImages:@[
-                                                                            @"btn_share_wechat",
-                                                                            @"btn_share_moments",
-                                                                            @"btn_share_weibo",
-                                                                            @"btn_share_qq",
-                                                                            @"btn_share_zone",
-                                                                            @"btn_share_message",
-                                                                            ]];
+    NSArray *images = @[
+                        @"btn_share_wechat",
+                        @"btn_share_moments",
+                        @"btn_share_weibo",
+                        @"btn_share_qq",
+                        @"btn_share_zone",
+                        @"btn_share_message",
+                        ];
+    [LCShareView showShareViewInVC:self.navigationController buttonImages:images buttonPress:^(UIButton *button) {
+        NSLog(@"%@", button);
+    } dissmisBlock:^{
+        NSLog(@"%s", __func__);
+    }];
+    
 }
 
 @end
