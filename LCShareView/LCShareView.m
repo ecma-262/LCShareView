@@ -42,13 +42,8 @@ static CGFloat KLeadingMargin = 44.0f;
                                                           [NSLayoutConstraint constraintWithItem:shareView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:shareView.sourceViewController.view attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:0.0f],
                                                           [NSLayoutConstraint constraintWithItem:shareView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:shareView.sourceViewController.view attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f]
                                                           ]];
-//
-//    [shareView addConstraints:@[
-//                                [NSLayoutConstraint constraintWithItem:shareView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:shareView.sourceViewController.view.frame.size.width],
-//                                [NSLayoutConstraint constraintWithItem:shareView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:shareView.sourceViewController.view.frame.size.height],
-//                                ]];
-//    [shareView performBlurImageView];
-//    [shareView configButtons];
+    [shareView performBlurImageView];
+    [shareView configButtons];
 }
 
 + (void)showShareViewInVC:(UIViewController *)viewController buttonImages:(NSArray *)images{
@@ -62,50 +57,71 @@ static CGFloat KLeadingMargin = 44.0f;
     self.socialButtons = [NSMutableArray array];
     self.buttonLeadings = [NSMutableArray array];
     
-    [self.buttonImages enumerateObjectsUsingBlock:^(NSString *imageName, NSUInteger idx, BOOL *stop) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.tag = idx;
-        [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-        [self.socialButtons addObject:button];
-    }];
     
     NSInteger number = (NSInteger)floorf(self.socialButtons.count * 0.5f);
     CGFloat imageHeight = [[(UIButton *)self.socialButtons.firstObject imageView].image size].height;
     CGFloat imageWidth = [[(UIButton *)self.socialButtons.firstObject imageView].image size].width;;
     
-    [self.socialButtons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:imageHeight]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:imageWidth]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:(number - idx) * (self.buttonMargin + imageHeight) - self.buttonMargin * 0.5f]];
-        NSLayoutConstraint *leadingCon = [NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:0.0f];
-        [self.buttonLeadings addObject:leadingCon];
-        [self addConstraint:leadingCon];
+    [self.buttonImages enumerateObjectsUsingBlock:^(NSString *imageName, NSUInteger idx, BOOL *stop) {
+        UIButton *button = [[UIButton alloc] init];
+        button.tag = idx;
+        [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+        [self.socialButtons addObject:button];
+        [self addSubview:button];
+        
+        
+        
+//        [button addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:imageHeight]];
+//        [button addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:imageWidth]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:-100]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0f constant:0]];
+//        NSLayoutConstraint *leadingCon = [NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0f constant:0.0f];
+//        [self.buttonLeadings addObject:leadingCon];
+//        [self addConstraint:leadingCon];
+        if (!idx) {
+            *stop = YES;
+        }
+
     }];
+    
+   
+    
+//    [self.socialButtons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+//        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:imageHeight]];
+//        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:imageWidth]];
+//        [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0]];
+//        NSLayoutConstraint *leadingCon = [NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0f constant:0.0f];
+//        [self.buttonLeadings addObject:leadingCon];
+//        [self addConstraint:leadingCon];
+//        if (!idx) {
+//            *stop = YES;
+//        }
+//    }];
     
     
     [self layoutIfNeeded];
     
-    [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-        self.blurImageView.alpha = 1.0f;
-    } completion:NULL];
-    
-    self.userInteractionEnabled = NO;
-    self.sourceViewController.view.userInteractionEnabled = NO;
-    
-    [self.buttonLeadings enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop) {
-        constraint.constant = -KLeadingMargin - imageWidth;
-        [UIView animateWithDuration:0.5f delay:idx * 0.05f usingSpringWithDamping:0.7f initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-            [self layoutIfNeeded];
-        } completion:^(BOOL finish){
-            if (idx == self.socialButtons.count - 1) {
-                self.userInteractionEnabled = YES;
-                self.sourceViewController.view.userInteractionEnabled = YES;
-            }
-        }];
-    }];
-    
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissShareView)];
-    [self addGestureRecognizer:singleTap];
+//    [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+//        self.blurImageView.alpha = 1.0f;
+//    } completion:NULL];
+//    
+//    self.userInteractionEnabled = NO;
+//    self.sourceViewController.view.userInteractionEnabled = NO;
+//    
+//    [self.buttonLeadings enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop) {
+//        constraint.constant = -KLeadingMargin - imageWidth;
+//        [UIView animateWithDuration:0.5f delay:idx * 0.05f usingSpringWithDamping:0.7f initialSpringVelocity:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+//            [self layoutIfNeeded];
+//        } completion:^(BOOL finish){
+//            if (idx == self.socialButtons.count - 1) {
+//                self.userInteractionEnabled = YES;
+//                self.sourceViewController.view.userInteractionEnabled = YES;
+//            }
+//        }];
+//    }];
+//    
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissShareView)];
+//    [self addGestureRecognizer:singleTap];
     
 //    NSMutableArray *buttonSignals = [NSMutableArray array];
 //    [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop){
