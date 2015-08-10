@@ -1,4 +1,7 @@
 # LCShareView
+
+自定义的分享视图
+
 ![License MIT](https://img.shields.io/dub/l/vibe-d.svg)
 ![Pod version](http://img.shields.io/cocoapods/v/LCShareView.svg?style=flat)
 ![Platform info](http://img.shields.io/cocoapods/p/LCShareView.svg?style=flat)
@@ -6,7 +9,7 @@
 ![1](demo.gif)
 
 
-##Example Usage
+##使用例子
 ```
 #import <LCShareView.h>
 ```
